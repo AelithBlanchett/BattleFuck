@@ -5,8 +5,8 @@ var client = redis.createClient({port: 6379, host: "127.0.0.1", db: 1});
 var currentFighters = [];
 var currentFight = {defender: 2, bypassTurn: false, turn: -1, whoseturn: -1, isInit: false, orgasms: 0, winner: -1, currentHold: {}, actionTier: "", actionType: "", dmgHp: 0, dmgLust: 0, actionIsHold: false, diceResult: 0, intMovesCount: [0,0]};
 var cappudice = require('cappu-dice');
-var dice = new cappudice(100);
-var maxHp = 8;
+var dice = new cappudice(50);
+var maxHp = 5;
 
 module.exports = function (parent, chanName) {
     fChatLibInstance = parent;
@@ -164,13 +164,13 @@ module.exports = function (parent, chanName) {
 
     cmdHandler.forceTurnWin = function(args,data){ //debug
         if (fChatLibInstance.isUserChatOP(channel, data.character)) {
-            currentFighters[currentFight.whoseturn].dice.addTmpMod(100,1);
+            dice.addTmpMod(100,1);
         }
     };
 
     cmdHandler.forceTurnLose = function(args,data){ //debug
         if (fChatLibInstance.isUserChatOP(channel, data.character)) {
-            currentFighters[currentFight.whoseturn].dice.addTmpMod(-100,1);
+            dice.addTmpMod(-100,1);
         }
     };
 
@@ -413,8 +413,8 @@ function beginInitiation(){
 
 function rollBoth(){
     currentFight.bothPlayerRoll = true;
-    currentFight.diceResultP1 = dice.roll();
-    currentFight.diceResultP2 = dice.roll();
+    currentFight.diceResultP1 = dice.roll(2).reduce(function getSum(total, num) {return total + num;});;
+    currentFight.diceResultP2 = dice.roll(2).reduce(function getSum(total, num) {return total + num;});;
     fChatLibInstance.sendMessage("\n[b]" + currentFighters[0].character + "[/b] rolled a [b]" + currentFight.diceResultP1  + "[/b]\n" +
         "[b]" + currentFighters[1].character + "[/b] rolled a [b]" + currentFight.diceResultP2 + "[/b] ", channel);
     checkRollWinner();
@@ -425,7 +425,7 @@ function roll() {
         checkRollWinner(true);
     }
     else{
-        currentFight.diceResult = dice.roll();
+        currentFight.diceResult = dice.roll(2).reduce(function getSum(total, num) {return total + num;});;
         fChatLibInstance.sendMessage("\n[b]" + currentFighters[currentFight.whoseturn].character + "[/b] rolled a [b]" + currentFight.diceResult + "[/b]", channel);
         checkRollWinner();
     }
@@ -527,7 +527,7 @@ function checkRollWinner(blnForceSuccess) {
                 }
             }
             else if( currentFight.actionType == "tieLow"){
-                if(currentFighters[(currentFight.whoseturn == 0 ? 1:0)].headTied){
+                if(currentFighters[(currentFight.whoseturn == 0 ? 1:0)].legsTied){
                     fChatLibInstance.sendMessage(currentFighters[(currentFight.whoseturn == 0 ? 1:0)].character + " is definitely not going to move after that! -5 penalty to their odds, while "+currentFighters[currentFight.whoseturn].character+" gets +5 to theirs!", channel);
                     currentFighters[(currentFight.whoseturn == 0 ? 1:0)].odds -= 5;
                     currentFighters[currentFight.whoseturn].odds += 5;
