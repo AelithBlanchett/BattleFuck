@@ -250,24 +250,30 @@ module.exports = function (parent, chanName) {
                     case "head":
                     case "face":
                     case "hair":
-                        currentFight.actionType = "escapeHigh";
+                        if(currentFighters[currentFight.whoseturn].headTied){
+                            currentFight.actionType = "escapeHigh";
+                        }
                         break;
                     case "arms":
                     case "hands":
                     case "wrists":
-                        currentFight.actionType = "escapeMedium";
+                        if(currentFighters[currentFight.whoseturn].armsTied) {
+                            currentFight.actionType = "escapeMedium";
+                        }
                         break;
                     case "legs":
                     case "thighs":
                     case "feet":
-                        currentFight.actionType = "escapeLow";
+                        if(currentFighters[currentFight.whoseturn].legsTied) {
+                            currentFight.actionType = "escapeLow";
+                        }
                         break;
                     default:
                         break;
                 }
 
                 if(currentFight.actionType == ""){
-                    fChatLibInstance.sendMessage("Invalid argument for this command. It should be: Head/Face/Hair OR Arms/Hands/Wrists OR Legs/Thighs/Feet. Example: !tie wrists", channel);
+                    fChatLibInstance.sendMessage("Invalid argument for this command. It should be: Head/Face/Hair OR Arms/Hands/Wrists OR Legs/Thighs/Feet and you must be tied up there! Example: !tie wrists", channel);
                     return;
                 }
                 if (currentFight.turn > 0) {
@@ -467,17 +473,23 @@ function checkRollWinner(blnForceSuccess) {
             else if(currentFight.actionType == "escapeHigh"){
                 fChatLibInstance.sendMessage("You tried to get out and... all the restraints on your head [b]finally[/b] gave in! [i]It's still your turn![/i]", channel);
                 currentFighters[currentFight.whoseturn].headTied = false;
+                currentFighters[(currentFight.whoseturn == 0 ? 1:0)].odds += 15;
+                currentFighters[currentFight.whoseturn].odds -= 15;
                 return;
             }
             else if(currentFight.actionType == "escapeMedium"){
                 fChatLibInstance.sendMessage("You tried to get out and... all the restraints on your arms and hands [b]finally[/b] gave in! [i]It's still your turn![/i]", channel);
                 currentFighters[currentFight.whoseturn].armsTied = false;
                 currentFighters[currentFight.whoseturn].locked = false;
+                currentFighters[(currentFight.whoseturn == 0 ? 1:0)].odds += 10;
+                currentFighters[currentFight.whoseturn].odds -= 10;
                 return;
             }
             else if(currentFight.actionType == "escapeLow"){
                 fChatLibInstance.sendMessage("You tried to get out and... all the restraints on your legs and thighs [b]finally[/b] gave in! [i]It's still your turn![/i]", channel);
                 currentFighters[currentFight.whoseturn].legsTied = false;
+                currentFighters[(currentFight.whoseturn == 0 ? 1:0)].odds += 15;
+                currentFighters[currentFight.whoseturn].odds -= 15;
                 return;
             }
             else if(currentFighters[currentFight.whoseturn].locked == true){
