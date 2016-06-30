@@ -1,0 +1,13 @@
+{
+  "name": "BattleFuck",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "fchatlib": "*",
+    "redis": "*",
+    "cappu-dice": "*"
+  }
+}

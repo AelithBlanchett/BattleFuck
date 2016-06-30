@@ -1,4 +1,4 @@
-# FChatBot-ExamplePlugin
+# BattleFuck plugin for FChatLib
 
 ## How to start?
 
