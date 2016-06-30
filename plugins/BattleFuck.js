@@ -277,7 +277,7 @@ module.exports = function (parent, chanName) {
                     return;
                 }
                 if (currentFight.turn > 0) {
-                    rollBoth();
+                    roll();
                 }
             }
             else {
