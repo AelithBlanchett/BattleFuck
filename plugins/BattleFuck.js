@@ -473,23 +473,23 @@ function checkRollWinner(blnForceSuccess) {
             else if(currentFight.actionType == "escapeHigh"){
                 fChatLibInstance.sendMessage("You tried to get out and... all the restraints on your head [b]finally[/b] gave in! [i]It's still your turn![/i]", channel);
                 currentFighters[currentFight.whoseturn].headTied = false;
-                currentFighters[(currentFight.whoseturn == 0 ? 1:0)].odds += 15;
-                currentFighters[currentFight.whoseturn].odds -= 15;
+                currentFighters[(currentFight.whoseturn == 0 ? 1:0)].odds -= 15;
+                currentFighters[currentFight.whoseturn].odds += 15;
                 return;
             }
             else if(currentFight.actionType == "escapeMedium"){
                 fChatLibInstance.sendMessage("You tried to get out and... all the restraints on your arms and hands [b]finally[/b] gave in! [i]It's still your turn![/i]", channel);
                 currentFighters[currentFight.whoseturn].armsTied = false;
                 currentFighters[currentFight.whoseturn].locked = false;
-                currentFighters[(currentFight.whoseturn == 0 ? 1:0)].odds += 10;
-                currentFighters[currentFight.whoseturn].odds -= 10;
+                currentFighters[(currentFight.whoseturn == 0 ? 1:0)].odds -= 10;
+                currentFighters[currentFight.whoseturn].odds += 10;
                 return;
             }
             else if(currentFight.actionType == "escapeLow"){
                 fChatLibInstance.sendMessage("You tried to get out and... all the restraints on your legs and thighs [b]finally[/b] gave in! [i]It's still your turn![/i]", channel);
                 currentFighters[currentFight.whoseturn].legsTied = false;
-                currentFighters[(currentFight.whoseturn == 0 ? 1:0)].odds += 15;
-                currentFighters[currentFight.whoseturn].odds -= 15;
+                currentFighters[(currentFight.whoseturn == 0 ? 1:0)].odds -= 15;
+                currentFighters[currentFight.whoseturn].odds += 15;
                 return;
             }
             else if(currentFighters[currentFight.whoseturn].locked == true){
