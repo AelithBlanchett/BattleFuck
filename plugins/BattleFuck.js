@@ -3,10 +3,10 @@ var channel;
 var redis = require("redis");
 var client = redis.createClient({port: 6379, host: "127.0.0.1", db: 1});
 var currentFighters = [];
-var currentFight = {bypassTurn: false, turn: -1, whoseturn: -1, isInit: false, orgasms: 0, winner: -1, currentHold: {}, actionTier: "", actionType: "", dmgHp: 0, dmgLust: 0, actionIsHold: false, diceResult: 0, intMovesCount: [0,0]};
+var currentFight = {defender: 2, bypassTurn: false, turn: -1, whoseturn: -1, isInit: false, orgasms: 0, winner: -1, currentHold: {}, actionTier: "", actionType: "", dmgHp: 0, dmgLust: 0, actionIsHold: false, diceResult: 0, intMovesCount: [0,0]};
 var cappudice = require('cappu-dice');
 var dice = new cappudice(100);
-var maxHp = 1;
+var maxHp = 8;
 
 module.exports = function (parent, chanName) {
     fChatLibInstance = parent;
@@ -245,6 +245,7 @@ module.exports = function (parent, chanName) {
         if (checkIfFightIsGoingOn()) {
             if (data.character == currentFighters[currentFight.whoseturn].character) {
                 currentFight.actionType = "";
+                currentFight.defender = currentFight.whoseturn;
                 switch(args.toLowerCase()){
                     case "head":
                     case "face":
@@ -440,7 +441,8 @@ function checkRollWinner(blnForceSuccess) {
             nextTurn(false);
         }
         else{
-            checkRollWinner((idWinner == currentFight.whoseturn));
+            currentFight.diceResult = -1;
+            checkRollWinner((idWinner == currentFight.defender));
         }
     }
     else{
