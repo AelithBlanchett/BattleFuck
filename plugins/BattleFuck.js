@@ -79,9 +79,6 @@ module.exports = function (parent, chanName) {
         if (currentFighters.length > 0) {
             if ((currentFighters.length > 0 && currentFighters[0] != undefined && currentFighters[0].character == data.character) || (currentFighters.length > 1 && currentFighters[1] != undefined && currentFighters[1].character == data.character)) {
                 fChatLibInstance.sendMessage("The fight has been ended.", channel);
-                if(currentFighters.length > 1){
-                    addExperienceOnPrematureEnd(currentFighters[0].character, currentFight.intMovesCount[0], currentFighters[1].character, currentFight.intMovesCount[1]);
-                }
                 setTimeout(resetFight(),2500);
             }
             else {
@@ -293,7 +290,7 @@ module.exports = function (parent, chanName) {
     cmdHandler.giveUp = function (args, data) {
         if (checkIfFightIsGoingOn()) {
             if (data.character == currentFighters[currentFight.whoseturn].character) {
-                if (currentFighters[currentFight.whoseturn].headTied && currentFighters[currentFight.whoseturn].armsTied && currentFighters[currentFight.whoseturn].legsTied) {
+                if (currentFighters[currentFight.whoseturn].armsTied) {
                     if (currentFight.turn > 0) {
                         currentFight.winner = (currentFight.whoseturn == 0 ? 1 : 0);
                         fChatLibInstance.sendMessage(currentFighters[currentFight.whoseturn].character + " is giving up! It must have been too much to handle!", channel);
@@ -301,7 +298,7 @@ module.exports = function (parent, chanName) {
                     }
                 }
                 else {
-                    fChatLibInstance.sendMessage("You're not fully bound, you can't give up yet!", channel);
+                    fChatLibInstance.sendMessage("You're not locked up, you can't give up yet!", channel);
                 }
             }
             else {
